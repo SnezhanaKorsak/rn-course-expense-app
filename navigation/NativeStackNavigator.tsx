@@ -27,7 +27,6 @@ export const NativeStackNavigator = () => {
         options={{
           presentation: 'modal',
           animation: 'slide_from_bottom',
-          title: 'Manage Expense',
         }}
       />
     </Stack.Navigator>

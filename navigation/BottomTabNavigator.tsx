@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { AllExpenses } from '../screens/AllExpenses';
 import { RecentExpenses } from '../screens/RecentExpenses';
-import { IconButton } from '../components/IconButton';
+import { IconButton } from '../components/ui/IconButton';
 
 import { StackParamList, TabParamList } from './types';
 import { GlobalStyles } from '../theme/styles';
