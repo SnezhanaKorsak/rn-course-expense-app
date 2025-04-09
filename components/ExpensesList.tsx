@@ -13,6 +13,7 @@ export const ExpensesList = ({ expenses }: Props) => {
       data={expenses}
       renderItem={({ item }) =>
         <ExpenseItem
+          expenseId={item.id}
           description={item.description}
           amount={item.amount}
           date={item.date} />}

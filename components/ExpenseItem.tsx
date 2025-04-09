@@ -7,16 +7,17 @@ import { GlobalStyles } from '../theme/styles';
 import { ProfileScreenNavigationProp } from '../navigation/types';
 
 type Props = {
+  expenseId: string;
   description: string;
   amount: number;
   date: Date;
 }
 
-export const ExpenseItem = ({ description, amount, date }: Props) => {
+export const ExpenseItem = ({ expenseId, description, amount, date }: Props) => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   const onPressHandler = () => {
-    navigation.navigate('ManageExpense');
+    navigation.navigate('ManageExpense', { expenseId });
   };
 
   return (

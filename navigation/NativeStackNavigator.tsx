@@ -3,19 +3,33 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ManageExpense } from '../screens/ManageExpense';
 import { BottomTabNavigator } from './BottomTabNavigator';
 
-import { TabParamList } from './types';
+import { StackParamList } from './types';
+import { GlobalStyles } from '../theme/styles';
 
-const Stack = createNativeStackNavigator<TabParamList>();
+const Stack = createNativeStackNavigator<StackParamList>();
 
 export const NativeStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+        headerTintColor: 'white',
+      }}
+    >
       <Stack.Screen
         name="ExpensesOverview"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="ManageExpense" component={ManageExpense} />
+      <Stack.Screen
+        name="ManageExpense"
+        component={ManageExpense}
+        options={{
+          presentation: 'modal',
+          animation: 'slide_from_bottom',
+          title: 'Manage Expense',
+        }}
+      />
     </Stack.Navigator>
   );
 };
