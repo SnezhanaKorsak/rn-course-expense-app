@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ManageExpense } from '../screens/ManageExpense';
 import { BottomTabNavigator } from './BottomTabNavigator';
 
-import { TypeRootStackParamList } from './types';
+import { TabParamList } from './types';
 
-const Stack = createNativeStackNavigator<TypeRootStackParamList>();
+const Stack = createNativeStackNavigator<TabParamList>();
 
 export const NativeStackNavigator = () => {
   return (

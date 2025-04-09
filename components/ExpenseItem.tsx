@@ -1,7 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { getFormattedDate } from '../utils';
 import { GlobalStyles } from '../theme/styles';
+
+import { ProfileScreenNavigationProp } from '../navigation/types';
 
 type Props = {
   description: string;
@@ -10,8 +13,17 @@ type Props = {
 }
 
 export const ExpenseItem = ({ description, amount, date }: Props) => {
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+
+  const onPressHandler = () => {
+    navigation.navigate('ManageExpense');
+  };
+
   return (
-    <Pressable>
+    <Pressable
+      onPress={onPressHandler}
+      style={({ pressed }) => pressed && styles.pressed}
+    >
       <View style={styles.expenseItem}>
         <View>
           <Text style={[styles.textBase, styles.description]}>
@@ -28,6 +40,9 @@ export const ExpenseItem = ({ description, amount, date }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  pressed: {
+    opacity: 0.75,
+  },
   expenseItem: {
     padding: 12,
     marginVertical: 8,

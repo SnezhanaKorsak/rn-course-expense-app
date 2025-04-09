@@ -3,21 +3,34 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { AllExpenses } from '../screens/AllExpenses';
 import { RecentExpenses } from '../screens/RecentExpenses';
+import { IconButton } from '../components/IconButton';
 
-import { TypeRootBottomTabParamList } from './types';
+import { StackParamList } from './types';
 import { GlobalStyles } from '../theme/styles';
 
-const BottomTabs = createBottomTabNavigator<TypeRootBottomTabParamList>();
+const BottomTabs = createBottomTabNavigator<StackParamList>();
 
 export const BottomTabNavigator = () => {
   return (
     <BottomTabs.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-        headerTintColor: 'white',
-        tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-        tabBarActiveTintColor: GlobalStyles.colors.accent500,
-      }}
+      screenOptions={({ navigation }) => (
+        {
+          headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+          headerTintColor: 'white',
+          tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+          tabBarActiveTintColor: GlobalStyles.colors.accent500,
+          headerRight: ({ tintColor }) => (
+            <IconButton
+              icon="add"
+              size={24}
+              color={tintColor as string}
+              onPress={() => {
+                navigation.navigate('ManageExpense');
+              }}
+            />
+          )
+        }
+      )}
     >
       <BottomTabs.Screen
         name="RecentExpenses"
