@@ -26,7 +26,6 @@ export const StatisticsService = {
   },
 
   async updateExpense(id: string, body: Omit<Expense, 'id'>) {
-    console.log();
    await instance.put(`/expenses/${id}.json`, body)
   },
 

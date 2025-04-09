@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 
@@ -10,12 +10,15 @@ import { Expense } from '../types';
 import { IconButton } from '../components/ui/IconButton';
 import { ExpenseForm } from '../components/ExpenseForm';
 import { StatisticsService } from '../api/expenses-service';
+import { ErrorOverlay } from '../components/ui/ErrorOverlay';
 
 export const ManageExpense = () => {
   const { params } = useRoute<ManageExpenseScreenRouteProp>();
   const navigation = useNavigation();
 
   const expensesCtx = useContext(ExpensesContext);
+
+  const [error, setError] = useState('');
 
   const expenseId = params?.expenseId;
   const isEditing = !!expenseId;
@@ -31,12 +34,15 @@ export const ManageExpense = () => {
   const goBackHandler = () => navigation.goBack();
 
   const deleteExpenseHandler = async () => {
-    if (expenseId) {
-      await StatisticsService.deleteExpense(expenseId);
-      expensesCtx.deleteExpense(expenseId);
+    try {
+      if (expenseId) {
+        await StatisticsService.deleteExpense(expenseId);
+        expensesCtx.deleteExpense(expenseId);
+      }
+      goBackHandler();
+    } catch (error) {
+      setError('Could not delete expense - please try again later!');
     }
-
-    goBackHandler();
   };
 
   const cancelHandler = () => {
@@ -44,15 +50,23 @@ export const ManageExpense = () => {
   };
 
   const confirmHandler = async (expenseData: Omit<Expense, 'id'>) => {
-    if (isEditing && expenseId) {
-      expensesCtx.updateExpense(expenseId, expenseData);
-      await StatisticsService.updateExpense(expenseId, expenseData);
-    } else {
-      const id = await StatisticsService.addExpense(expenseData);
-      expensesCtx.addExpense({ ...expenseData, id });
+    try {
+      if (isEditing && expenseId) {
+        expensesCtx.updateExpense(expenseId, expenseData);
+        await StatisticsService.updateExpense(expenseId, expenseData);
+      } else {
+        const id = await StatisticsService.addExpense(expenseData);
+        expensesCtx.addExpense({ ...expenseData, id });
+      }
+      goBackHandler();
+    } catch (error) {
+      setError('Could not save data - please try again later!');
     }
-    goBackHandler();
   };
+
+  if (error) {
+    return <ErrorOverlay message={error} />;
+  }
 
   return (
     <View style={styles.container}>
