@@ -18,7 +18,7 @@ type Props = {
 export const ExpenseForm = ({ foundExpense, submitButtonLabel, onCancel, onSubmit }: Props) => {
   const [inputValues, setInputValues] = useState({
     amount: {
-      value: String(foundExpense?.amount) || '',
+      value: foundExpense ? String(foundExpense?.amount) : '',
       isValid: true,
     },
     date: {

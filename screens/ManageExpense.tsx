@@ -9,6 +9,7 @@ import { Expense } from '../types';
 
 import { IconButton } from '../components/ui/IconButton';
 import { ExpenseForm } from '../components/ExpenseForm';
+import { StatisticsService } from '../api/expenses-service';
 
 export const ManageExpense = () => {
   const { params } = useRoute<ManageExpenseScreenRouteProp>();
@@ -29,8 +30,11 @@ export const ManageExpense = () => {
 
   const goBackHandler = () => navigation.goBack();
 
-  const deleteExpenseHandler = () => {
-    if (expenseId) expensesCtx.deleteExpense(expenseId);
+  const deleteExpenseHandler = async () => {
+    if (expenseId) {
+      await StatisticsService.deleteExpense(expenseId);
+      expensesCtx.deleteExpense(expenseId);
+    }
 
     goBackHandler();
   };
@@ -39,11 +43,13 @@ export const ManageExpense = () => {
     goBackHandler();
   };
 
-  const confirmHandler = (expenseData: Omit<Expense, 'id'>) => {
+  const confirmHandler = async (expenseData: Omit<Expense, 'id'>) => {
     if (isEditing && expenseId) {
       expensesCtx.updateExpense(expenseId, expenseData);
+      await StatisticsService.updateExpense(expenseId, expenseData);
     } else {
-      expensesCtx.addExpense(expenseData);
+      const id = await StatisticsService.addExpense(expenseData);
+      expensesCtx.addExpense({ ...expenseData, id });
     }
     goBackHandler();
   };

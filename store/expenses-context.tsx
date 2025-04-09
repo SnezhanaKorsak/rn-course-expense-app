@@ -1,7 +1,6 @@
 import React, { useReducer } from 'react';
 import { createContext } from 'react';
 
-import { DUMMY_EXPENSES } from '../constants/data';
 import { expensesReducer } from './reducer';
 import { Expense } from '../types';
 
@@ -13,7 +12,9 @@ type ExpenseDataType = Omit<Expense, 'id'>;
 
 export const ExpensesContext = createContext({
   expenses: [] as Expense[],
-  addExpense: (data: ExpenseDataType) => {
+  addExpense: (data: Expense) => {
+  },
+  setExpenses: (data: Expense[]) => {
   },
   updateExpense: (id: string, data: ExpenseDataType) => {
   },
@@ -23,11 +24,15 @@ export const ExpensesContext = createContext({
 
 export const ExpensesContextProvider = ({ children }: Props
 ) => {
-  const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+  const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
-  function addExpense(expenseData: ExpenseDataType) {
+  const addExpense = (expenseData: Expense) => {
     dispatch({ type: 'ADD', payload: expenseData });
   }
+
+  const setExpenses = (expenses: Expense[]) => {
+    dispatch({ type: 'SET', payload: expenses });
+  };
 
   function deleteExpense(id: string) {
     dispatch({ type: 'DELETE', payload: id });
@@ -40,6 +45,7 @@ export const ExpensesContextProvider = ({ children }: Props
   const value = {
     expenses: expensesState,
     addExpense: addExpense,
+    setExpenses: setExpenses,
     updateExpense: updateExpense,
     deleteExpense: deleteExpense,
   };

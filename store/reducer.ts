@@ -1,16 +1,20 @@
 import { Expense } from '../types';
 
-type ActionType = AddAction | UpdateAction | DeleteAction;
+type ActionType = AddType | UpdateAction | DeleteAction | SetAction;
 
-type AddAction = {
+type AddType = {
   type: 'ADD',
-  payload: Omit<Expense, 'id'>;
+  payload: Expense;
+}
+
+type SetAction = {
+  type: 'SET',
+  payload: Expense[];
 }
 
 type UpdateAction = {
   type: 'UPDATE',
   payload: { id: string, data: Omit<Expense, 'id'> };
-
 }
 
 type DeleteAction = {
@@ -21,9 +25,10 @@ type DeleteAction = {
 export const expensesReducer = (state: Expense[], action: ActionType) => {
   switch (action.type) {
     case 'ADD':
-      const id = new Date().toString() + Math.random().toString();
+      return [action.payload, ...state];
 
-      return [{ ...action.payload, id: id }, ...state];
+    case 'SET':
+      return action.payload.sort((a, b) => b.date.getTime() - a.date.getTime());
 
     case 'UPDATE':
       const updatableExpenseIndex = state.findIndex(
@@ -41,4 +46,4 @@ export const expensesReducer = (state: Expense[], action: ActionType) => {
     default:
       return state;
   }
-}
+};
