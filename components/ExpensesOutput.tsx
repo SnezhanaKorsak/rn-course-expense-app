@@ -1,20 +1,21 @@
 import { StyleSheet, View } from 'react-native';
 
-import { DUMMY_EXPENSES } from '../constants/data';
 import { GlobalStyles } from '../theme/styles';
+import { Expense } from '../types';
 
 import { ExpensesSummary } from './ExpensesSummary';
 import { ExpensesList } from './ExpensesList';
 
 type Props = {
+  expenses: Expense[];
   expensesPeriod: string;
 }
 
-export const ExpensesOutput = ({ expensesPeriod }: Props) => {
+export const ExpensesOutput = ({ expenses, expensesPeriod }: Props) => {
   return (
     <View style={styles.container}>
-      <ExpensesSummary expenses={DUMMY_EXPENSES} periodName={expensesPeriod} />
-      <ExpensesList expenses={DUMMY_EXPENSES} />
+      <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
+      <ExpensesList expenses={expenses} />
     </View>
   );
 };

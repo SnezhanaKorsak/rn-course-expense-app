@@ -6,7 +6,6 @@ import { GlobalStyles } from '../theme/styles';
 
 import { IconButton } from '../components/ui/IconButton';
 import { Button } from '../components/ui/Button';
-
 export const ManageExpense = () => {
   const { params } = useRoute<ManageExpenseScreenRouteProp>();
   const navigation = useNavigation();
