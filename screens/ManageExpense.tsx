@@ -5,11 +5,10 @@ import { StyleSheet, View } from 'react-native';
 import { ManageExpenseScreenRouteProp } from '../navigation/types';
 import { GlobalStyles } from '../theme/styles';
 import { ExpensesContext } from '../store/expenses-context';
+import { Expense } from '../types';
 
 import { IconButton } from '../components/ui/IconButton';
-import { Button } from '../components/ui/Button';
 import { ExpenseForm } from '../components/ExpenseForm';
-import { Expense } from '../types';
 
 export const ManageExpense = () => {
   const { params } = useRoute<ManageExpenseScreenRouteProp>();
@@ -19,6 +18,8 @@ export const ManageExpense = () => {
 
   const expenseId = params?.expenseId;
   const isEditing = !!expenseId;
+
+  const foundExpense = expensesCtx.expenses.find((expense) => expense.id === expenseId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -50,6 +51,7 @@ export const ManageExpense = () => {
   return (
     <View style={styles.container}>
       <ExpenseForm
+        foundExpense={foundExpense}
         submitButtonLabel={isEditing ? 'Update' : 'Add'}
         onCancel={cancelHandler}
         onSubmit={confirmHandler}
